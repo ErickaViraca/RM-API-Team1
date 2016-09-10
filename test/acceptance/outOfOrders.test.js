@@ -21,7 +21,7 @@ describe('Out-of-orders Acceptance Test', function () {
 	var OutOfOrder = {};
 
 	beforeEach(function(done){
-		room.getOneRoomExistent(function(oneRoom){
+		room.getDefaultRoom(function(oneRoom){
 			var outOfOrdersJson = {
 				roomId : oneRoom._id,
 				from : moment().add(constant.ADDFROM, 'hours').utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
@@ -54,7 +54,7 @@ describe('Out-of-orders Acceptance Test', function () {
 	});
 
 	it('GET /out-of-orders/{outOfOrderId}' , function(done){
-		outOfOrder.getById(constant.FULPATH, OutOfOrder._id, function(err, res){
+		outOfOrder.getById(constant.PATH, OutOfOrder._id, function(err, res){
      	    expect(res.status).to.equal(status.OK);
      	    expect(res.body._id).to.equal(OutOfOrder._id);
      	    expect(res.body.roomId).to.equal(OutOfOrder.roomId);
@@ -69,7 +69,7 @@ describe('Out-of-orders Acceptance Test', function () {
 	});
 
 	it('GET /services/{serviceId}/rooms/{roomId}/out-of-orders' , function(done){
-		outOfOrder.get(constant.PATH, function(err,res){
+		outOfOrder.get(constant.FULPATH, function(err,res){
      	    expect(res.status).to.equal(status.OK);
      	    expect(res.body.length).to.equal(OutOfOrders.length);
             done();
@@ -108,7 +108,7 @@ describe('Out-of-orders Acceptance Test', function () {
 	});
 
 	it('POST /services/{serviceId}/rooms/{roomId}/out-of-orders', function(done){
-		room.getOneRoomExistent(function(oneRoom){
+		room.getDefaultRoom(function(oneRoom){
 			var outOfOrdersJsonPost = {
 				roomId : oneRoom._id,
 				from : moment().add(constant.ADDFROM, 'hours').utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),

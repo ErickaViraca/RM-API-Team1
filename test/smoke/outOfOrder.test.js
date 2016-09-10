@@ -20,7 +20,7 @@ describe('Out-of-orders Smoke Test', function () {
 	var OutOfOrder = {};
 
 	beforeEach(function(done){
-		room.getOneRoomExistent(function(oneRoom){
+		room.getDefaultRoom(function(oneRoom){
 			var outOfOrdersJson = {
 				roomId : oneRoom._id,
 				from : moment().add(constant.ADDFROM, 'hours').utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
@@ -80,7 +80,7 @@ describe('Out-of-orders Smoke Test', function () {
 	});
 
 	it('POST /services/{serviceId}/rooms/{roomId}/out-of-orders', function(done){
-		room.getOneRoomExistent(function(oneRoom){
+		room.getDefaultRoom(function(oneRoom){
 			var outOfOrdersJsonPost = {
 				roomId : oneRoom._id,
 				from : moment().add(constant.ADDFROM, 'hours').utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),

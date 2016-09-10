@@ -4,5 +4,6 @@
   "ADDFROM" : 3,
   "ADDTO" : 4,
   "INDEX" : 1,
+  "INDEXSERVICE" : 0,
   "QUANT" : 1
 }

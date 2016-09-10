@@ -18,7 +18,7 @@ describe('Service Smoke Test', function () {
 	before(function(done){
 		service.get(function(err,res){
 			if (typeof res.body[0] !== 'undefined') {
-				service.getOneServiceExistent(function(oneService){
+				service.getDefaultService(function(oneService){
 					service.delete(oneService._id, function (err, res){
 				        expect(res.status).to.equal(status.OK);
 					        done();

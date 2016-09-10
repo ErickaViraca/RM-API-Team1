@@ -12,7 +12,6 @@ var service = endPointManager.getService();
 var room = endPointManager.getRoom();
 var constant = resourceManager.getConstantVariables();
 var outOfOrderValues = resourceManager.getOutOfOrdersValues();
-var meeting = endPointManager.getMeeting();
 var outOfOrder = endPointManager.getOutOfOrder();
 var location = endPointManager.getLocation();
 var resource = endPointManager.getResource();
@@ -22,18 +21,19 @@ var status = resourceManager.getStatus();
 /*
 Feature: Workflow Test
 
-Scenario : Verify the Workflow.
+Scenario : Verify a basic workflow, having a room and a service already created
+		   and related, would create a new out-of-order for the service/room identified. 
+		   Follow a location and a resource are created, and assigned to the service/room.
 	Given I get a service.
 		And I get a room.
 	When I create an out-of order in the room
 		And I create a location.
 		And I create a resource.
 	Then I assigned the location and resource to the room.
-		And I delete all
 */
 
 describe('Workflow Test', function () {
-	context('Verify the Workflow. ',function(){
+	context('Verify a basic workflow, having a room and a service already created.....',function(){
 	this.timeout(config.timeout);
 	var nameOutOfOrders = outOfOrderValues.title + randomstring.generate({ length: 6, charset: 'alphabetic'});
 	var name= resources.resourname + randomstring.generate({ length: 6, charset: 'alphabetic'});
@@ -43,14 +43,27 @@ describe('Workflow Test', function () {
 	var outOfOrdersJson = {};
 	var Service = {};
 
+	after(function(done){
+		outOfOrder.delete(outOfOrdersJson._id, function (err, res){
+	        expect(res.status).to.equal(status.OK);
+	        location.delete(locationJson._id, function (err, res){
+		        expect(res.status).to.equal(status.OK);
+		        resource.delete(resourceJson._id, function (err, res){
+			        expect(res.status).to.equal(status.OK);
+			        done();
+			    });
+	   		});
+        });
+	});
+
 	it('Given I get a \'Service\'',function(done){
-		service.getOneServiceExistent(function(oneService){
+		service.getDefaultService(function(oneService){
 			Service = oneService;
             done();
 		});
 	});
 		it('And I get a \'Room\'',function(done){
-			room.getOneRoomExistent(function(oneRoom){
+			room.getDefaultRoom(function(oneRoom){
 				Room =  oneRoom;
 				done();
 			});
@@ -106,19 +119,5 @@ describe('Workflow Test', function () {
         	});
 		});
 	});
-
-		it('And I delete all',function(done) {
-            outOfOrder.delete(outOfOrdersJson._id, function (err, res){
-		        expect(res.status).to.equal(status.OK);
-		        location.delete(locationJson._id, function (err, res){
-			        expect(res.status).to.equal(status.OK);
-			        resource.delete(resourceJson._id, function (err, res){
-				        expect(res.status).to.equal(status.OK);
-				        done();
-				    });
-		   		});
-            });
-	    });
 	});
-
 });
